@@ -1,15 +1,21 @@
 using WebApp.GraphqlSample.Database;
 using GraphQL;
 
-namespace WebApp.GraphqlSample.Graphql 
+namespace WebApp.GraphqlSample.Graphql
 {
-  [GraphQLMetadata("Mutation")]
-  public class Mutation 
-  {
-    [GraphQLMetadata("addAuthor")]
-    public Author Add(string name)
+    [GraphQLMetadata("Mutation")]
+    public class Mutation
     {
-      return null;
+        [GraphQLMetadata("addAuthor")]
+        public Author Add(string name)
+        {
+            using (var db = new StoreContext())
+            {
+                var author = new Author() { Name = name };
+                db.Authors.Add(author);
+                db.SaveChanges();
+                return author;
+            }
+        }
     }
-  }
 }
